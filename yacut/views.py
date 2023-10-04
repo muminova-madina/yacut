@@ -16,7 +16,7 @@ def index():
         if not custom_id:
             custom_id = URLMap.get_unique_short_id(6)
         elif not URLMap.is_free_short_id(custom_id):
-            error_message = f'Предложенный вариант короткой ссылки {custom_id} уже существует.'
+            error_message = f'Предложенный вариант короткой ссылки уже существует.'
             return render_template("index.html",
                                    form=form,
                                    error_message=error_message)
