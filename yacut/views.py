@@ -1,5 +1,5 @@
 from flask import Response, redirect, render_template, url_for
-from yacut import app, db
+from yacut import app
 from yacut.form import URLMapForm
 
 from yacut.models import URLMap
