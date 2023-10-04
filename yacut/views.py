@@ -1,3 +1,5 @@
+from _curses import flash
+
 from flask import Response, redirect, render_template, url_for
 from yacut import app
 from yacut.form import URLMapForm
@@ -10,28 +12,35 @@ from yacut.utils import save
 def index():
     form = URLMapForm()
 
-    if not form.validate_on_submit():
-        return render_template("index.html", form=form)
+    if form.validate_on_submit():
+        custom_id = form.custom_id.data
 
-    if not form.custom_id.data:
-        form.custom_id.data = URLMap.get_unique_short_id(6)
+        if not custom_id:
+            custom_id = URLMap.get_unique_short_id(6)
+        elif not URLMap.is_free_short_id(custom_id):
+            error_message = f'Предложенный вариант короткой ссылки уже существует.'
+            return render_template("index.html",
+                                   form=form,
+                                   error_message=error_message)
 
-    urlmap = URLMap(
-        original=form.original_link.data,
-        short=form.custom_id.data,
-    )
-    save(urlmap)
+        urlmap = URLMap(
+            original=form.original_link.data,
+            short=custom_id,
+        )
+        save(urlmap)
 
-    form.custom_id.data = None
-    return render_template(
-        "index.html",
-        form=form,
-        short_link=url_for(
-            "mapping_redirect",
-            short_id=urlmap.short,
-            _external=True,
-        ),
-    )
+        form.custom_id.data = None
+        return render_template(
+            "index.html",
+            form=form,
+            short_link=url_for(
+                "mapping_redirect",
+                short_id=urlmap.short,
+                _external=True,
+            ),
+        )
+
+    return render_template("index.html", form=form)
 
 
 @app.route("/<string:short_id>", strict_slashes=False)

@@ -27,15 +27,10 @@ class URLMap(db.Model):
     def is_free_short_id(cls, short_id):
         return cls.query.filter_by(short=short_id).first() is None
 
-    @staticmethod
-    def get_unique_short_id(length):
-        max_attempts = 10
-
-        for _ in range(max_attempts):
-            random_string = ''.join(
-                random.choice(string.ascii_letters + string.digits) for _ in range(length))
-
-            short_id = hashlib.sha256(random_string.encode()).hexdigest()[:length]
-            if URLMap.is_free_short_id(short_id):
-                return short_id
-        raise Exception("Невозможно сгенерировать уникальный короткий идентификатор")
+    @classmethod
+    def get_unique_short_id(cls, length):
+        while True:
+            short_id = cls.generate_short_id(length)
+            if cls.is_free_short_id(short_id):
+                break
+        return short_id
