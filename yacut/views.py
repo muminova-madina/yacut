@@ -1,7 +1,8 @@
 from flask import Response, redirect, render_template, url_for
-from yacut import app
-from yacut.form import URLMapForm
 
+from yacut import app
+from yacut.constants import SHORT_ID_LENGTH
+from yacut.form import URLMapForm
 from yacut.models import URLMap
 from yacut.utils import save
 
@@ -14,7 +15,7 @@ def index():
         custom_id = form.custom_id.data
 
         if not custom_id:
-            custom_id = URLMap.get_unique_short_id(6)
+            custom_id = URLMap.get_unique_short_id(SHORT_ID_LENGTH)
         elif not URLMap.is_free_short_id(custom_id):
             error_message = 'Предложенный вариант короткой ссылки уже существует.'
             return render_template("index.html",

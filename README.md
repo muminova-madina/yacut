@@ -35,3 +35,16 @@ python3 -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
+
+Выполните миграции
+```
+flask db upgrade
+```
+
+Запуск проекта
+```
+flask run
+```
+
+Автор
+Муминова Мадина https://github.com/madina-zvezda

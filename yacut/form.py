@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length, Regexp
+
 from yacut import constants as const
+from yacut.constants import CUSTOM_ID_LENGTH
 
 
 class URLMapForm(FlaskForm):
@@ -14,7 +16,7 @@ class URLMapForm(FlaskForm):
     custom_id = StringField(
         'Идентификатор ссылки',
         description='Идентификатор ссылки',
-        validators=(Length(max=16,
+        validators=(Length(max=CUSTOM_ID_LENGTH,
                            message='Длина поля не должна превышать 16 символов.'),
                     Regexp(const.CUSTOM_ID_REGEX,
                            message=(

@@ -5,6 +5,7 @@ from flask import jsonify, request, url_for
 
 from yacut import app
 from yacut import constants as const
+from yacut.constants import SHORT_ID_LENGTH
 from yacut.error_handlers import InvalidAPIUsage
 from yacut.models import URLMap
 from yacut.utils import required_fields, save
@@ -33,7 +34,7 @@ def create_short_url():
             if func(custom_id):
                 raise InvalidAPIUsage(message.format(custom_id=custom_id))
     else:
-        data["custom_id"] = URLMap.get_unique_short_id(6)
+        data["custom_id"] = URLMap.get_unique_short_id(SHORT_ID_LENGTH)
 
     urlmap = URLMap(original=data.get("url"), short=data.get("custom_id"))
     save(urlmap)

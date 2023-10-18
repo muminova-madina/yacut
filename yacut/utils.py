@@ -1,7 +1,9 @@
 from functools import wraps
 from typing import Callable, Iterable
+
 from flask import request
 from flask_sqlalchemy.model import Model
+
 from yacut import constants as const
 from yacut import db
 from yacut.error_handlers import InvalidAPIUsage

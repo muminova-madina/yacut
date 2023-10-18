@@ -1,8 +1,8 @@
-import random
-import string
 from datetime import datetime
+
 from yacut import constants as const
 from yacut import db
+from yacut.id_validation import generate_short_id, is_free_short_id, get_unique_short_id
 
 
 class URLMap(db.Model):
@@ -17,19 +17,11 @@ class URLMap(db.Model):
     )
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    @staticmethod
-    def generate_short_id(length):
-        symbols = string.ascii_letters + string.digits
-        return "".join((random.choice(symbols) for _ in range(length)))
+def generate_short_id(short_id):
+    return generate_short_id
 
-    @classmethod
-    def is_free_short_id(cls, short_id):
-        return cls.query.filter_by(short=short_id).first() is None
+def is_free_short_id(short_id):
+    return is_free_short_id
 
-    @classmethod
-    def get_unique_short_id(cls, length):
-        while True:
-            short_id = cls.generate_short_id(length)
-            if cls.is_free_short_id(short_id):
-                break
-        return short_id
+def get_unique_short_id(unique_short_id):
+    return get_unique_short_id
