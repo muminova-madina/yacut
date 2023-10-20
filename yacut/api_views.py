@@ -5,26 +5,19 @@ from flask import jsonify, request, url_for
 
 from yacut import app
 from yacut import constants as const
-from yacut.constants import SHORT_ID_LENGTH
 from yacut.error_handlers import InvalidAPIUsage
 from yacut.models import URLMap
 from yacut.utils import required_fields, save
 
 CUSTOM_ID_VALIDATORS = {
-    lambda value: (len(value) > const.CUSTOM_ID_LENGTH): (
-        const.INVALID_CUSTOM_ID
-    ),
-    lambda value: (re.match(const.CUSTOM_ID_REGEX, value) is None): (
-        const.INVALID_CUSTOM_ID
-    ),
-    lambda value: not URLMap.is_free_short_id(value): (
-        const.NOT_UNIQUE_CUSTOM_ID
-    ),
+    lambda value: len(value) > const.CUSTOM_ID_LENGTH: const.INVALID_CUSTOM_ID,
+    lambda value: re.match(const.CUSTOM_ID_REGEX, value) is None: const.INVALID_CUSTOM_ID,
+    lambda value: not URLMap.is_free_short_id(value): const.NOT_UNIQUE_CUSTOM_ID,
 }
 
 
-@app.route("/api/id/", methods=("POST",))
-@required_fields(("url",))
+@app.route("/api/id/", methods=["POST"])
+@required_fields(["url"])
 def create_short_url():
     data = request.get_json()
 
@@ -34,18 +27,14 @@ def create_short_url():
             if func(custom_id):
                 raise InvalidAPIUsage(message.format(custom_id=custom_id))
     else:
-        data["custom_id"] = URLMap.get_unique_short_id(SHORT_ID_LENGTH)
+        data["custom_id"] = URLMap.get_unique_short_id(const.SHORT_ID_LENGTH)
 
     urlmap = URLMap(original=data.get("url"), short=data.get("custom_id"))
     save(urlmap)
 
     response = {
         "url": urlmap.original,
-        "short_link": url_for(
-            "mapping_redirect",
-            short_id=urlmap.short,
-            _external=True,
-        ),
+        "short_link": url_for("mapping_redirect", short_id=urlmap.short, _external=True),
     }
     return jsonify(response), HTTPStatus.CREATED
 
