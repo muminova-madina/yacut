@@ -2,8 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, URLField
 from wtforms.validators import (URL, DataRequired, Length, Optional, Regexp, ValidationError)
 
-from yacut.contants import REQUIRED_FIELD_MESSAGE, URL_VALIDATION_MESSAGE, MIN_CUSTOM_ID_LENGTH,\
-    MAX_CUSTOM_ID_LENGTH, CUSTOM_ID_VALIDATION_MESSAGE, CUSTOM_ID_EXISTS_MESSAGE
+from yacut.contants import (REQUIRED_FIELD_MESSAGE, URL_VALIDATION_MESSAGE, MIN_CUSTOM_ID_LENGTH,
+                            MAX_CUSTOM_ID_LENGTH, CUSTOM_ID_VALIDATION_MESSAGE, CUSTOM_ID_EXISTS_MESSAGE)
 from yacut.models import URLMap
 
 
