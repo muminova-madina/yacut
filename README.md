@@ -12,12 +12,12 @@
 
 ### Технологии
 
-[![Flask][Flask-badge]][Flask-url]
-[![SQLAlchemy][SQLAlchemy-badge]][SQLAlchemy-url]
-[![Gunicorn][Gunicorn-badge]][Gunicorn-url]
-[![Postgres][Postgres-badge]][Postgres-url]
-[![Docker][Docker-badge]][Docker-url]
-[![Nginx][Nginx-badge]][Nginx-url]
+- Flask
+- SQLAlchemy
+- Gunicorn
+- Postgres
+- Docker
+- Nginx
 
 ## ⚙ Начало Работы
 
